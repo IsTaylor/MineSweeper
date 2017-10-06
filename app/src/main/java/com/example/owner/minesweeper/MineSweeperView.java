@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -18,10 +19,15 @@ public class MineSweeperView extends View {
     private Paint paintBg;
     private Paint paintLine;
     private Paint paintBgLine;
+    private Paint paintO;
     private int numSquares;
+
+    public boolean flagMode;
 
     public MineSweeperView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+
+        flagMode = false;
 
         numSquares = MineSweeperModel.getInstance().getNumSquares();
 
@@ -39,6 +45,15 @@ public class MineSweeperView extends View {
         paintBgLine.setStyle(Paint.Style.STROKE);
         paintBgLine.setStrokeWidth(7);
 
+        paintO = new Paint();
+        paintO.setColor(Color.parseColor("#b4eeb4"));
+        paintO.setStyle(Paint.Style.STROKE);
+        paintO.setStrokeWidth(7);
+
+    }
+
+    public void setFlagMode(boolean flagMode) {
+        this.flagMode = flagMode;
     }
 
     @Override
@@ -56,6 +71,7 @@ public class MineSweeperView extends View {
 
     }
 
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
@@ -63,6 +79,12 @@ public class MineSweeperView extends View {
 
             int tX = ((int) event.getX()) / (getWidth() / numSquares);
             int tY = ((int) event.getY()) / (getHeight() / numSquares);
+
+            //if its in flag mode
+
+            //else if its not in flaged mode
+
+            MineSweeperModel.getInstance().setClickedContent(tX, tY);
         }
 
         invalidate();
@@ -72,7 +94,20 @@ public class MineSweeperView extends View {
 
     private void drawSelected(Canvas canvas) {
         for (int i = 0; i < numSquares; i++) {
+            for (int j = 0; j < numSquares; j++) {
 
+                if (MineSweeperModel.getInstance().getFieldContent(i, j).isClicked()) {
+                    int numSquares = MineSweeperModel.getInstance().getNumSquares();
+                    int centerX = i * getWidth() / numSquares + getWidth() / (2 * numSquares);
+                    int centerY = j * getHeight() / numSquares + getHeight() / (2 * numSquares);
+
+                    canvas.drawCircle(centerX,
+                            centerY,
+                            getWidth() / numSquares / 3,
+                            paintO);
+
+                }
+            }
         }
     }
 
