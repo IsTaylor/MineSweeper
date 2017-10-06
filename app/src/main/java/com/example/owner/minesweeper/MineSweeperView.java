@@ -20,6 +20,7 @@ public class MineSweeperView extends View {
     private Paint paintLine;
     private Paint paintBgLine;
     private Paint paintO;
+    private Paint paintX;
     private int numSquares;
 
     public boolean flagMode;
@@ -49,6 +50,11 @@ public class MineSweeperView extends View {
         paintO.setColor(Color.parseColor("#b4eeb4"));
         paintO.setStyle(Paint.Style.STROKE);
         paintO.setStrokeWidth(7);
+
+        paintX = new Paint();
+        paintX.setColor(Color.parseColor("#efb7b7"));
+        paintX.setStyle(Paint.Style.STROKE);
+        paintX.setStrokeWidth(7);
 
     }
 
@@ -80,11 +86,12 @@ public class MineSweeperView extends View {
             int tX = ((int) event.getX()) / (getWidth() / numSquares);
             int tY = ((int) event.getY()) / (getHeight() / numSquares);
 
-            //if its in flag mode
+            if (flagMode) {
+                MineSweeperModel.getInstance().setFlagContent(tX, tY);
+            } else {
 
-            //else if its not in flaged mode
-
-            MineSweeperModel.getInstance().setClickedContent(tX, tY);
+                MineSweeperModel.getInstance().setClickedContent(tX, tY);
+            }
         }
 
         invalidate();
@@ -93,14 +100,22 @@ public class MineSweeperView extends View {
     }
 
     private void drawSelected(Canvas canvas) {
+        int numSquares = MineSweeperModel.getInstance().getNumSquares();
         for (int i = 0; i < numSquares; i++) {
             for (int j = 0; j < numSquares; j++) {
 
                 if (MineSweeperModel.getInstance().getFieldContent(i, j).isClicked()) {
-                    int numSquares = MineSweeperModel.getInstance().getNumSquares();
+
+                    canvas.drawLine((i * getWidth() / numSquares) + 5,
+                            (j * getHeight() / numSquares) + 5,
+                            ((i + 1) * getWidth() / numSquares) - 5,
+                            ((j + 1) * getHeight() / numSquares) - 5,
+                            paintX);
+
+
+                } else if (MineSweeperModel.getInstance().getFieldContent(i, j).isFlag()) {
                     int centerX = i * getWidth() / numSquares + getWidth() / (2 * numSquares);
                     int centerY = j * getHeight() / numSquares + getHeight() / (2 * numSquares);
-
                     canvas.drawCircle(centerX,
                             centerY,
                             getWidth() / numSquares / 3,

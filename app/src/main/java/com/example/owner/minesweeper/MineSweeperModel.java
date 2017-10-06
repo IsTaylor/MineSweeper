@@ -45,12 +45,14 @@ public class MineSweeperModel {
 
     }
 
-    //TODO
-    //adjust clicked content
     public void setClickedContent(int x, int y) {
         model[x][y].setIsClicked(true);
     }
 
+
+    public void setFlagContent(int x, int y) {
+        model[x][y].setIsFlag(true);
+    }
 
     //TODO
     //generate where the mines are on the field
