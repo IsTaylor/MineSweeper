@@ -21,12 +21,20 @@ public class MineSweeperView extends View {
     private Paint paintBgLine;
     private Paint paintO;
     private Paint paintX;
+    private Paint paintMine;
     private int numSquares;
+    private int flagCount;
+    private static Context context;
 
     public boolean flagMode;
 
-    public MineSweeperView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
+    public MineSweeperView(Context c, @Nullable AttributeSet attrs) {
+        super(c, attrs);
+        context = c;
+
+        //TODO
+        //if user wins, but flagcount > mineCount
+        flagCount = 0;
 
         flagMode = false;
 
@@ -53,8 +61,12 @@ public class MineSweeperView extends View {
 
         paintX = new Paint();
         paintX.setColor(Color.parseColor("#efb7b7"));
-        paintX.setStyle(Paint.Style.STROKE);
+        paintX.setStyle(Paint.Style.FILL);
         paintX.setStrokeWidth(7);
+
+        paintMine = new Paint();
+        paintMine.setColor(Color.WHITE);
+        paintMine.setStyle(Paint.Style.FILL);
 
     }
 
@@ -74,7 +86,6 @@ public class MineSweeperView extends View {
 
         //draw selected
         drawSelected(canvas);
-
     }
 
 
@@ -87,33 +98,79 @@ public class MineSweeperView extends View {
             int tY = ((int) event.getY()) / (getHeight() / numSquares);
 
             if (flagMode) {
-                MineSweeperModel.getInstance().setFlagContent(tX, tY);
-            } else {
 
+                if (MineSweeperModel.getInstance().getFieldContent(tX, tY).isFlag()) {
+                    MineSweeperModel.getInstance().setFlagContent(tX, tY, false);
+                    flagCount--;
+                } else {
+                    MineSweeperModel.getInstance().setFlagContent(tX, tY, true);
+                    flagCount++;
+                }
+
+                if (flagCount > MineSweeperModel.getInstance().getMineCount()) {
+                    ((MainActivity) getContext()).setTooManyFlagsMessage();
+                } else {
+                    ((MainActivity) getContext()).clearTooManyFlagsMessage();
+                    if (MineSweeperModel.getInstance().checkIfWon()) {
+                        gameWon();
+                    }
+                }
+
+
+            } else {
+                MineSweeperModel.Square curSquare = MineSweeperModel.getInstance().getFieldContent(tX, tY);
                 MineSweeperModel.getInstance().setClickedContent(tX, tY);
+                if (curSquare.isFlag()) {
+                    curSquare.setIsFlag(false);
+                    flagCount--;
+                    if (flagCount <= MineSweeperModel.getInstance().getMineCount()) {
+                        ((MainActivity) getContext()).clearTooManyFlagsMessage();
+                    }
+                }
+
+                if (curSquare.isBomb()) {
+                    gameLost();
+                }
             }
         }
 
         invalidate();
 
-        return super.onTouchEvent(event);
+        return super.
+
+                onTouchEvent(event);
+
     }
 
     private void drawSelected(Canvas canvas) {
         int numSquares = MineSweeperModel.getInstance().getNumSquares();
         for (int i = 0; i < numSquares; i++) {
             for (int j = 0; j < numSquares; j++) {
+                MineSweeperModel.Square curSquare = MineSweeperModel.getInstance().getFieldContent(i, j);
 
-                if (MineSweeperModel.getInstance().getFieldContent(i, j).isClicked()) {
+                if (curSquare.isClicked()) {
 
-                    canvas.drawLine((i * getWidth() / numSquares) + 5,
-                            (j * getHeight() / numSquares) + 5,
-                            ((i + 1) * getWidth() / numSquares) - 5,
-                            ((j + 1) * getHeight() / numSquares) - 5,
-                            paintX);
+                    if (curSquare.isBomb()) {
+                        paintMine.setTextSize(100);
+                        canvas.drawText("M",
+                                i * (getWidth() / numSquares),
+                                (j + 1) * (getHeight() / numSquares),
+                                paintMine);
 
+                    } else {
 
+                        int numToDisplay = MineSweeperModel.getInstance().generateNumber(i, j);
+
+                        paintX.setTextSize(100);
+                        canvas.drawText(String.valueOf(numToDisplay),
+                                i * (getWidth() / numSquares),
+                                (j + 1) * (getHeight() / numSquares),
+                                paintX);
+
+                    }
                 } else if (MineSweeperModel.getInstance().getFieldContent(i, j).isFlag()) {
+                    //if you'e gotten all flags, you win!
+
                     int centerX = i * getWidth() / numSquares + getWidth() / (2 * numSquares);
                     int centerY = j * getHeight() / numSquares + getHeight() / (2 * numSquares);
                     canvas.drawCircle(centerX,
@@ -142,6 +199,25 @@ public class MineSweeperView extends View {
         }
 
 
+    }
+
+
+    //TODO
+    //change false to hardcoded variable
+    private void gameLost() {
+        ((MainActivity) getContext()).setWinnerMessage(false);
+    }
+
+    private void gameWon() {
+        ((MainActivity) getContext()).setWinnerMessage(true);
+    }
+
+
+    public void clearBoard() {
+        MineSweeperModel.getInstance().resetGame();
+        ((MainActivity) getContext()).clearTooManyFlagsMessage();
+        flagMode = false;
+        invalidate();
     }
 
 }
