@@ -9,33 +9,18 @@
     android:id="@+id/layoutContent"
     tools:context="com.example.owner.minesweeper.MainActivity">
 
-    <TextView
-        android:id="@+id/winnerMessage"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/etGuess"
+        android:inputType="number"
+        android:hint="@string/numSquares_prompt"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <com.example.owner.minesweeper.MineSweeperView
-        android:id="@+id/mineSweeperView"
-        android:layout_width="200dp"
-        android:layout_height="200dp" />
-
-    <TextView
-        android:id="@+id/tooManyFlagsMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/holo_red_dark" />
-
-    <ToggleButton
-        android:id="@+id/btToggle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textOn="@string/toggle_on"
-        android:textOff="@string/toggle_off" />
-
     <Button
-        android:id="@+id/btClear"
-        android:layout_width="wrap_content"
+        android:id="@+id/startBtn"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/btn_reset" />
+        android:text="@string/startBtn" />
+
 
 </LinearLayout>

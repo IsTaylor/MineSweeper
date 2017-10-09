@@ -11,13 +11,12 @@ import java.util.Random;
 public class MineSweeperModel {
 
     private static MineSweeperModel mineSweeperModel = null;
-    private int numSquares = 6;
+    private int numSquares = 5;
+    private Square[][] model;
     private int mineCount;
 
     private MineSweeperModel() {
         mineCount = 0;
-        initializeModel();
-        generateMines();
     }
 
     public static MineSweeperModel getInstance() {
@@ -28,15 +27,9 @@ public class MineSweeperModel {
         return mineSweeperModel;
     }
 
-    public int getNumSquares() {
-        return numSquares;
-    }
-
     public int getMineCount() {
         return mineCount;
     }
-
-    private Square[][] model = new Square[numSquares][numSquares];
 
     //TODO
     //generate where the mines are on the field
@@ -121,6 +114,13 @@ public class MineSweeperModel {
 
     public Square getFieldContent(int x, int y) {
         return model[x][y];
+    }
+
+    public void setNumSquares(int num) {
+        numSquares = num;
+        model = new Square[numSquares][numSquares];
+        initializeModel();
+        generateMines();
     }
 
     public void resetGame() {

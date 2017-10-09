@@ -22,7 +22,7 @@ public class MineSweeperView extends View {
     private Paint paintO;
     private Paint paintX;
     private Paint paintMine;
-    private int numSquares;
+    public static int numSquares;
     private int flagCount;
     private static Context context;
 
@@ -32,13 +32,8 @@ public class MineSweeperView extends View {
         super(c, attrs);
         context = c;
 
-        //TODO
-        //if user wins, but flagcount > mineCount
         flagCount = 0;
-
         flagMode = false;
-
-        numSquares = MineSweeperModel.getInstance().getNumSquares();
 
         paintBg = new Paint();
         paintBg.setColor(Color.BLACK);
@@ -108,9 +103,9 @@ public class MineSweeperView extends View {
                 }
 
                 if (flagCount > MineSweeperModel.getInstance().getMineCount()) {
-                    ((MainActivity) getContext()).setTooManyFlagsMessage();
+                    ((StartScreen) getContext()).setTooManyFlagsMessage();
                 } else {
-                    ((MainActivity) getContext()).clearTooManyFlagsMessage();
+                    ((StartScreen) getContext()).clearTooManyFlagsMessage();
                     if (MineSweeperModel.getInstance().checkIfWon()) {
                         gameWon();
                     }
@@ -124,7 +119,7 @@ public class MineSweeperView extends View {
                     curSquare.setIsFlag(false);
                     flagCount--;
                     if (flagCount <= MineSweeperModel.getInstance().getMineCount()) {
-                        ((MainActivity) getContext()).clearTooManyFlagsMessage();
+                        ((StartScreen) getContext()).clearTooManyFlagsMessage();
                     }
                 }
 
@@ -143,7 +138,6 @@ public class MineSweeperView extends View {
     }
 
     private void drawSelected(Canvas canvas) {
-        int numSquares = MineSweeperModel.getInstance().getNumSquares();
         for (int i = 0; i < numSquares; i++) {
             for (int j = 0; j < numSquares; j++) {
                 MineSweeperModel.Square curSquare = MineSweeperModel.getInstance().getFieldContent(i, j);
@@ -201,22 +195,30 @@ public class MineSweeperView extends View {
 
     }
 
-
     //TODO
     //change false to hardcoded variable
     private void gameLost() {
-        ((MainActivity) getContext()).setWinnerMessage(false);
+        ((StartScreen) getContext()).setWinnerMessage(false);
     }
 
     private void gameWon() {
-        ((MainActivity) getContext()).setWinnerMessage(true);
+        ((StartScreen) getContext()).setWinnerMessage(true);
     }
 
+    public static void setNumSquares(int num) {
+        numSquares = num;
+        MineSweeperModel.getInstance().setNumSquares(num);
+    }
+
+    public static int getNumSquares() {
+        return numSquares;
+    }
 
     public void clearBoard() {
         MineSweeperModel.getInstance().resetGame();
-        ((MainActivity) getContext()).clearTooManyFlagsMessage();
+        ((StartScreen) getContext()).clearTooManyFlagsMessage();
         flagMode = false;
+        flagCount = 0;
         invalidate();
     }
 

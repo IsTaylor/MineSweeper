@@ -3,4 +3,12 @@
     <string name="toggle_off">Try mode</string>
     <string name="toggle_on">Flag mode</string>
     <string name="btn_reset">Reset</string>
+    <string name="KEY_NUMSQUARES">KEY_NUMSQUARES</string>
+    <string name="error_no_user_input">This field can not be empty</string>
+    <string name="numSquares_prompt">Enter the number of rows</string>
+    <string name="startBtn">Start</string>
+    <string name="winner_text">Congratulations Winner!</string>
+    <string name="winner_snackbar">Winner!</string>
+    <string name="loser_text">Awh, you lost :(</string>
+    <string name="loser_snackbar">Loser</string>
 </resources>
