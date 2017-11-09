@@ -11,4 +11,28 @@
     <string name="winner_snackbar">Winner!</string>
     <string name="loser_text">Awh, you lost :(</string>
     <string name="loser_snackbar">Loser</string>
+    <string name="error_too_many_flags">Too many flags!</string>
+    <string name="minesweeper">MineSweeper</string>
+    <string name="debug_mode">Debug Mode</string>
+    <string name="debug">Debug</string>
+    <string name="no_debug">No debug</string>
+    <string name="key_debug_mode">KEY_DEBUG_MODE</string>
+    <string name="explanation">
+        "Made by Isabel Taylor
+
+    Extras added:
+        1. Home screen activity!
+        2. Changeable board size!
+        3. Warning when too many flags are placed (by changing visibility!)
+        4. User cannot win game when too many flags are placed
+        5. User can undo flag placement! And can overwrite flag placement by clicking in try mode!
+        6. User is blocked from changing the board once game is won or lost!
+        7. However, if they press reset then they can play a new game, with new mines!
+        8. Mines are randomly generated!
+        9. SHIMMER TEXT
+
+    Known Bugs:
+        1. The mines and numbers don’t update with the user size (Though the logic is the same)
+        2. Each square has a 20% chance of becoming a mine, so the number will fluctuate from game to game"</string>
+    <string name="info">Info</string>
 </resources>

@@ -6,8 +6,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
+    android:background="#e1bffd"
+    android:screenOrientation="portrait"
+    android:configChanges="keyboardHidden|orientation|screenSize"
     android:id="@+id/layoutContent"
     tools:context="com.example.owner.minesweeper.StartScreen">
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/minesweeper"
+            android:textSize="50sp"
+            android:textColor="#ffffff" />
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
     <TextView
         android:id="@+id/winnerMessage"

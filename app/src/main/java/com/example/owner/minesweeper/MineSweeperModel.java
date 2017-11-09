@@ -1,5 +1,6 @@
 package com.example.owner.minesweeper;
 
+import android.os.Bundle;
 import android.util.Log;
 
 import java.util.Random;
@@ -14,6 +15,7 @@ public class MineSweeperModel {
     private int numSquares = 5;
     private Square[][] model;
     private int mineCount;
+
 
     private MineSweeperModel() {
         mineCount = 0;
@@ -31,8 +33,6 @@ public class MineSweeperModel {
         return mineCount;
     }
 
-    //TODO
-    //generate where the mines are on the field
     private void generateMines() {
         int numMines = numSquares;
         double probability = (float) numMines / (numSquares * numSquares);
@@ -45,8 +45,6 @@ public class MineSweeperModel {
         }
     }
 
-    //TODO
-    //random num generator
     private boolean decideMine(double probability) {
         Random rand = new Random();
         float randNum = rand.nextFloat();
@@ -59,7 +57,6 @@ public class MineSweeperModel {
     }
 
 
-
     private void initializeModel() {
         for (int i = 0; i < numSquares; i++) {
             for (int j = 0; j < numSquares; j++) {
@@ -69,6 +66,7 @@ public class MineSweeperModel {
         }
 
     }
+
 
     public int generateNumber(int x, int y) {
         int neighborMines = 0;
@@ -122,6 +120,7 @@ public class MineSweeperModel {
         initializeModel();
         generateMines();
     }
+
 
     public void resetGame() {
         mineCount = 0;

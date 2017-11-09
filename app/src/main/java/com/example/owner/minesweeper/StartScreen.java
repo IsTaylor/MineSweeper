@@ -9,6 +9,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
+
+
 public class StartScreen extends AppCompatActivity {
 
 
@@ -18,6 +21,7 @@ public class StartScreen extends AppCompatActivity {
     private int numSquares;
     MineSweeperView mineSweeperView;
     ToggleButton toggleButton;
+    boolean debugMode = false;
     final boolean FLAGMODE = false;
     final boolean TRYMODE = true;
 
@@ -25,6 +29,10 @@ public class StartScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
+
+
+        ShimmerFrameLayout shimmerView = findViewById(R.id.shimmer_view);
+        shimmerView.startShimmerAnimation();
 
         if (getIntent().hasExtra(getString(R.string.KEY_NUMSQUARES))) {
             numSquares = getIntent().getIntExtra(getString(R.string.KEY_NUMSQUARES), 0);
@@ -56,9 +64,10 @@ public class StartScreen extends AppCompatActivity {
         });
     }
 
+
     private void reset() {
         mineSweeperView.clearBoard();
-        winnerMessage.setVisibility(View.GONE);
+        winnerMessage.setVisibility(View.INVISIBLE);
         toggleButton.setChecked(FLAGMODE);
     }
 
@@ -71,17 +80,19 @@ public class StartScreen extends AppCompatActivity {
             text = getString(R.string.loser_text);
             Snackbar.make(layoutContent, R.string.loser_snackbar, Snackbar.LENGTH_LONG).show();
         }
+        winnerMessage.setVisibility(View.VISIBLE);
         winnerMessage.setText(text);
     }
 
-    //TODO
-    //extract string resources
+
     public void setTooManyFlagsMessage() {
-        tooManyFlagsMessage.setText("Too many flags!");
+        tooManyFlagsMessage.setVisibility(View.VISIBLE);
+        tooManyFlagsMessage.setTextSize(30);
+        tooManyFlagsMessage.setText(R.string.error_too_many_flags);
     }
 
     public void clearTooManyFlagsMessage() {
-        tooManyFlagsMessage.setText("");
+        tooManyFlagsMessage.setVisibility(View.GONE);
 
     }
 
